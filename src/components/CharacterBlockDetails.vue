@@ -28,12 +28,12 @@
           <li class="list-group-item">location name: <strong>{{ character.location.name }}</strong></li>
           <li class="list-group-item">gender: <strong>{{ character.gender }}</strong></li>
         </ul>
-        <ul class="list-group list-group-flush row">
-          <li class="list-group-item"><strong>Episode</strong></li>
+        <ul class="list-group list-group-flush flex flex-wrap flex-row">
+          <li class="list-group-item w-100"><strong>Episode</strong></li>
           <li
               v-for="episode in characterEpisode"
               :key="episode"
-              class="list-group-item pointer col-6 flex-row"
+              class="list-group-item pointer w-50 flex-row"
               @click="goEpisode(episode)"
           >
             episode: <strong>{{ episode }}</strong>
