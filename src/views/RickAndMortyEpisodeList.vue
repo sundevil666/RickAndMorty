@@ -1,6 +1,6 @@
 <template>
   <div class="rick-and-morty-episode-list">
-      <CharacterEpisodeBlock :episode="episode" />
+      <CharacterEpisodeBlock :episode="episode" v-if="Object.keys(episode).length" />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
       episode: {},
     };
   },
-  async created () {
+  async mounted () {
     try {
       const { id } = this.$route.params;
 
@@ -32,8 +32,18 @@ export default {
 };
 </script>
 
-<style>
+<style lang="stylus">
 .rick-and-morty-episode-list {
-  overflow-y: auto;
+  height: 100%;
+
+  .card {
+    height: 100%;
+    display grid
+    grid-template-columns 1fr
+    grid-template-rows auto auto 1fr
+  }
+  .card-body__characters-in-episode {
+    overflow-y auto
+  }
 }
 </style>

@@ -9,15 +9,19 @@
       <li class="list-group-item">date: <strong>{{ episode.air_date }}</strong></li>
       <li class="list-group-item">episode: <strong>{{ episode.episode }}</strong></li>
     </ul>
-    <ul class="list-group list-group-flush row flex-row">
-      <li
-          v-for="character in getEpisodeCharacters()"
-          :key="character"
-          class="list-group-item pointer col-6"
-      >
-        character: <strong>{{ character }}</strong>
-      </li>
-    </ul>
+    <div class="card-body__characters-in-episode">
+      <ul class="list-group list-group-flush d-flex flex-row flex-wrap">
+        <li
+            v-for="character in characterInEpisodes"
+            :key="character.id"
+            class="list-group-item pointer col-6"
+            @click.prevent="detailedInfoCharacter(character.id)"
+        >
+          <div><img :src="character.image" :alt="character.name" /></div>
+          <div>character: <strong>{{ character.name }}</strong></div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -33,22 +37,40 @@ export default {
       },
     },
   },
+  computed: {
+    characterInEpisodes () {
+      return this.$store.getters['getCharactersInEpisode'];
+    },
+  },
+  created () {
+    const id = this.getCharactersInEpisode();
+    id.forEach(item => {
+      this.$store.dispatch('fetchCharactersInEpisode', item)
+    })
+  },
   methods: {
-    getEpisodeCharacters () {
-      let episodeCharactersId = this.episode.characters;
-      let i = 0
-      i++
-      console.log(i);
-      if(episodeCharactersId) {
-        episodeCharactersId = episodeCharactersId.map(item => {
-          let id = item.split('/')
-          return +id[id.length - 1]
-        })
-      }
+    getWidthUrlIdCharacters (str) {
+      return str.map(item => {
+        let idSplit = item.split('/')
 
-      console.log('episodeCharactersId', episodeCharactersId);
-      // return episodeCharactersId
-    }
+        return +idSplit[idSplit.length - 1]
+      })
+    },
+    getCharactersInEpisode () {
+      if (this.episode.characters) {
+        let urlEpisodeCharactersId = this.episode.characters;
+        urlEpisodeCharactersId = this.getWidthUrlIdCharacters(urlEpisodeCharactersId)
+
+        return urlEpisodeCharactersId
+      }
+    },
+    detailedInfoCharacter (id) {
+      this.$store.
+      this.$router.push({
+        name: 'CharacterDetails',
+        params: { id: id }
+      });
+    },
   }
 };
 </script>

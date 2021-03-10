@@ -10,6 +10,7 @@ export default new Vuex.Store({
     state: {
         characters: {},
         pages: 0,
+        charactersInEpisode: [],
     },
     mutations: {
         setCharacters (state, { page, characters }) {
@@ -18,7 +19,13 @@ export default new Vuex.Store({
         },
         setPages(state, pages) {
             state.pages = pages
-        }
+        },
+        setCharacterInEpisode(state, character) {
+            state.charactersInEpisode.push(character.data);
+        },
+        clearCharacterInEpisode(state) {
+            state.charactersInEpisode = []
+        },
     },
     actions: {
         fetchCharacter ({state, commit}, page) {
@@ -41,6 +48,13 @@ export default new Vuex.Store({
         fetchEpisodeCharacter(_, id) {
             return axiosInstance.get(CHARACTERS_BY_EPISODE(id))
         },
+        fetchCharactersInEpisode({commit }, id) {
+            axiosInstance.get(CHARACTERS_BY_ID(id))
+                .then(({ data }) => {
+                    commit('setCharacterInEpisode', {data})
+                })
+                .catch(err => console.log('err', err))
+        }
     },
     getters: {
         getCharacterById: (state) => ({id, page}) => {
@@ -52,6 +66,9 @@ export default new Vuex.Store({
         },
         getCharacterByPage: (state) => (page) => {
             return state.characters[page]
-        }
+        },
+        getCharactersInEpisode: state => {
+            return state.charactersInEpisode
+        },
     }
 });

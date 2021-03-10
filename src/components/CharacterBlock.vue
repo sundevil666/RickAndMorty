@@ -2,7 +2,7 @@
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
     <div
         class="card pointer"
-        @click.prevent="detailedInfo"
+        @click.prevent="detailedInfoCharacter"
     >
       <img :src="character.image" class="card-img-top" :alt="character.name">
       <div class="card-body">
@@ -33,7 +33,7 @@ export default {
     },
   },
   methods: {
-    detailedInfo () {
+    detailedInfoCharacter () {
       const { id } = this.$route.params;
       if (!id) {
         this.$router.push({
@@ -41,7 +41,7 @@ export default {
           params: { id: this.character.id }
         });
       }
-    }
+    },
   }
 };
 </script>
